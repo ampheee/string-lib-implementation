@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+#include "lib_string.h"
+
+
+const char a[] = "Hello world";
+const char b[] = "Hello world\n\0";
+const char c[] = "a\n\0";
+const char d[] = " \n\0";
+const char e[] = " \0";
+const char f[] = "\n\0";
+const char g[] = "\0";
+
+
+
+#test lib_string_memcmp_test
+
+#test lib_string_strcmp_test
+
+#test lib_string_strncmp_test
+
+#test lib_string_memchr_test
+
+#test lib_string_memcpy_test
+
+#test lib_string_memmove_test
+
+#test lib_string_memset_test
+
+#test lib_string_strcat_test
+
+#test lib_string_strncat_test
+
+#test lib_string_strchr_test
+ck_assert_str_eq(strchr(a, 'l'), lib_strchr(a, 'l'));
+ck_assert(lib_strchr(a, 'n') == NULL);
+ck_assert(lib_strchr(a, '\n') == NULL);
+ck_assert_str_eq(strchr(a, '\0'), lib_strchr(a, '\0'));
+ck_assert_str_eq(strchr(g, '\0'), lib_strchr(g, '\0'));
+ck_assert_str_eq(strchr(e, ' '), lib_strchr(e, ' '));
+
+
+#test lib_string_strcpy_test
+
+#test lib_string_strncpy_test
+
+
+#test lib_string_strpbrk_test
+
+#test lib_string_strrchr_test
+
+#test lib_string_strstr_test
+
+#test lib_string_strtok_test
+
+#test lib_string_strcspn_test
+
+#test lib_string_strlen_test
+ck_assert_uint_eq(strlen(a), lib_strlen(a));
+ck_assert_uint_eq(strlen(b), lib_strlen(b));
+ck_assert_uint_eq(strlen(c), lib_strlen(c));
+ck_assert_uint_eq(strlen(d), lib_strlen(d));
+ck_assert_uint_eq(strlen(e), lib_strlen(e));
+ck_assert_uint_eq(strlen(f), lib_strlen(f));
+ck_assert_uint_eq(strlen(g), lib_strlen(g));
+
+
+#test lib_string_strspn_test
