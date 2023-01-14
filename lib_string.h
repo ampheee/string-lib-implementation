@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#define lib_NULL ((void *)0)
+typedef unsigned long lib_size_t
+
 int lib_memcmp(const void *str1, const void *str2, size_t n);
 int lib_strcmp(const char *str1, const char *str2);
 int lib_strncmp(const char *str1, const char *str2, size_t n);

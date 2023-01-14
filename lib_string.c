@@ -15,43 +15,57 @@
 // }
 
 int lib_strcmp(const char *str1, const char *str2) {
-    int res = 0, temp1 = 0, temp2 = 0;
-    size_t len1 = lib_strlen(str1), len2 = lib_strlen(str2);
-    size_t minLen = len1 > len2 ? len2 : len1;
-    if (len1 == 0 && len2 == 0) {
-        res = 0;
-    } else {
-        for (size_t i = 0; i < minLen; i+= sizeof(char)) {
-            temp1 += str1[i];
-            temp2 += str2[i];
+    int res;
+    while ((*str1 != '\0') && (*str1 - *str2 == 0)) {
+        str1++;
+        str2++;
+    }
+    res = *str1 - *str2;
+    return res;
+}
+
+int lib_strncmp(const char *str1, const char *str2, lib_size_t n) {
+    int res = 0;
+    char *temp1 = (char *) calloc (1, lib_strlen(str1));
+    char *temp2 = (char *) calloc (1, lib_strlen(str2));
+    for (lib_size_t i = 0; i < n; i++) {
+        temp1[i] = str1[i];
+        temp2[i] = str2[i];    
+    }
+    res = lib_strcmp(temp1, temp2);
+    free(temp1);
+    free(temp2);
+    return res;
+}
+
+void *lib_memchr(const void *str, int c, lib_size_t n) { // нужно больше тестов
+    void *res = lib_NULL;
+    int flag = 0;
+    char *temp_str = (char *) str;
+    lib_size_t i = 0;
+    for (i = 0; i < n; i++) {
+        if (temp_str[i] == c) {
+            flag = 1;
+            break;
         }
-        res = temp1 > temp2 ? 1 : -1;
+    }
+    if (flag == 1) {
+        res = temp_str;
     }
     return res;
 }
 
-// int lib_strncmp(const char *str1, const char *str2, size_t n) {
-//     int res = 0;
-    
-// }
-
-// void *lib_memchr(const void *str, int c, size_t n) {
-//     void* res = NULL;
-//     if(str != NULL) {
-//         for(int i=0; (str+i)!= NULL && i<n; ++i) {
-//             if(*(char*)(str+i) == c) {
-//                 //printf("%d", *(str+i));
-//                 res = (void*)(str+i);
-//                 break;
-//             }
-//         }
-//     }
-//     return res;
-// }
-
-// void *memcpy(void *dest, const void *src, size_t n) { 
-
-// }
+void *lib_memcpy(void *dest, const void *src, lib_size_t n) { //нужно больше тестов
+    void *res = dest;
+    char *temp_dest = (char *) dest;
+    const char *temp_src = (const char *) src;
+    if (temp_dest != lib_NULL && temp_src != 0) {
+        for (lib_size_t iterator = 0; iterator < n; iterator++) {
+            *temp_dest++ = *temp_src++;
+        }
+    }
+    return res;
+}
 
 // void *lib_memmove(void *dest, const void *src, size_t n) {
     
@@ -90,9 +104,21 @@ char *lib_strchr(const char *str, int c) {
     return res;
 }
 
-// char *strcpy(char *dest, const char *src) {
-
+// char *lib_strcpy(char *dest, const char *src) {
+//     char *res = dest; // *temp_dest_str = dest;
+//     lib_strlen(src);
+//     //const char *temp_src_str = (const char *) src;
+    
+//     lib_size_t iterator = 0;
+//     // if (temp_dest_str != lib_NULL && temp_src_str != 0) {
+//         while (iterator != 10) {
+//             // temp_dest_str[iterator] = temp_src_str[iterator];
+//             iterator++;
+//         }
+//     // }
+//     return res;
 // }
+
 
 // char *strncpy(char *dest, const char *src, size_t n) {
 
