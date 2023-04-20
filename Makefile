@@ -37,5 +37,4 @@ clean_test_temps:
 checkStyle:
 	@echo //////////////START TEST////////////////
 	cppcheck	*.c
-	@echo lastCheck 
 	
