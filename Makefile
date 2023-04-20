@@ -37,7 +37,3 @@ clean_test_temps:
 checkStyle:
 	@echo //////////////START TEST////////////////
 	cppcheck	*.c
-
-
-osLab:
-	$(CC)	osLab2.c	lib_string.c	lib_sscanf.c	lib_sprintf.c	$(PKGFLAGS)	-o	osLab $(CHECKFLAGS)
