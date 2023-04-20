@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall	-Wextra	-Werror	-std=c11
+# CFLAGS=-Wall	-Wextra	-Werror	-std=c11
 COVFLAGS=-fprofile-arcs	-ftest-coverage
 
 OS=$(shell uname)
@@ -7,25 +7,37 @@ ifeq ($(OS), Darwin)
 	PKGFLAGS=-lcheck
 else
 	CHECKFLAGS=-lcheck	-lpthread	-lpthread	-lrt	-lm	-lsubunit
-endif	
+endif
 
-all: clean test
+all: clean lib_string.a
 
-test: string.a
-	checkmk clean_mode=1 my.check > string_test.c
-	$(CC)	$(CFLAGS)	string_test.c	lib_string.a	$(PKGFLAGS)	-o	test $(CHECKFLAGS)
+test:
+	checkmk clean_mode=1 my.check > lib_string_test.c
+	$(CC)	lib_string_test.c	lib_string.c	lib_sscanf.c	lib_sprintf.c	$(PKGFLAGS)	-o	lib_string_test $(CHECKFLAGS)	--coverage
 
-string.a: clean
-	$(CC)	$(CFLAGS)	-c	lib_string.c
-	ar -rcs	lib_string.a	lib_string.o
+lib_string.a: clean
+	$(CC)	$(CFLAGS)	-c	lib_string.c lib_sprintf.c lib_sscanf.c
+	ar rc	lib_string.a	*.o
+	ranlib lib_string.a
+
+gcov_report:	clean	lib_string.a test
+	./lib_string_test
+	lcov --capture --directory . --output-file coverage.info
+	genhtml coverage.info --output-directory gcov_report
+	rm -rf	*.gcno	*.gcda gcov_rep gcov_rep.* coverage.info
+	chmod -x *.* Makefile
+	open gcov_report/index.html
 
 clean:
-	rm -rf *.a *.o report/ test *.out *.gcda *.gcno *.dSYM gcov_* *.*.gch string_test.*
-	chmod -x *
-	chmod +x string-lib-implementation
+	rm -rf *.a *.o report/ lib_string_test *.out *.gcda *.gcno *.dSYM gcov_* *.*.gch lib_string_test.c	coverage.info
 
-check:
-	@echo
+clean_test_temps:
+	rm -rf lib_string_test*.* core*	
 
-gcov_report:
-#В цели gcov_report должен формироваться отчёт gcov в виде html страницы. Для этого unit-тесты должны запускаться с флагами gcov
+checkStyle:
+	@echo //////////////START TEST////////////////
+	cppcheck	*.c
+
+
+osLab:
+	$(CC)	osLab2.c	lib_string.c	lib_sscanf.c	lib_sprintf.c	$(PKGFLAGS)	-o	osLab $(CHECKFLAGS)
